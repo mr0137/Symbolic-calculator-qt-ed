@@ -1,6 +1,31 @@
 ﻿#include "Calc.h"
 
-string correct(string Data)
+
+Calculator::Calculator(string input, bool Deg)
+{
+    string Chars;
+    int i = 1;
+    float res = 0.0;
+    string Data = input;
+    Data = correct(Data);
+
+    if (!bkt_check(Data))
+    {
+        Error = "Error : missed '(' or ')'";
+        return;
+    }
+    while (i != 0)
+    {
+        i = BKT(Data, Chars, Deg);
+    }
+    if (atof(Data.c_str()) -  atoi(Data.c_str()) == 0)
+    {
+        Data =  to_string(atoi(Data.c_str())) + " ";
+    }
+    Result = Data;
+}
+
+string Calculator::correct(string Data)
 {
     int i = 0;
     string temp;
@@ -10,11 +35,12 @@ string correct(string Data)
         i = Data.find(' ');
         if (Data[i] == (char)' ')
         {
-            for (i = 0; i < Data.length(); i++)
-            {
-                Data[i] = Data[i + 1];
-            }
-            Data.resize(Data.length() - 1);
+            Data.erase(i,1);
+           // for (i = 0; i < Data.length(); i++)
+           // {
+           //     Data[i] = Data[i + 1];
+           // }
+           // Data.resize(Data.length() - 1);
         }
     }
 
@@ -30,8 +56,6 @@ string correct(string Data)
     {
         Data.resize(Data.length() - 1);
     }
-
-
 
     //вторая проверка для упрощения работы
     for (i = 0; i < Data.length(); i++)
@@ -86,7 +110,7 @@ string correct(string Data)
     return Data;
 }
 
-int Capacity(const string Data)
+int Calculator::Capacity(const string Data)
 {
     int i = 0, counter = 0;
 
@@ -101,7 +125,7 @@ int Capacity(const string Data)
     return counter - 1;
 }
 
-int Sort(string &Data, string &Chars)
+int Calculator::Sort(string &Data, string &Chars)
 {
     int i = 0, count = 0;
 
@@ -125,7 +149,7 @@ int Sort(string &Data, string &Chars)
     return count;
 }
 
-string Find_prev_elem(string &Data, int &pos, string &Chars, int elem)
+string Calculator::Find_prev_elem(string &Data, int &pos, string &Chars, int elem)
 {
     string element;
     int i = pos - 1, counter = 0;
@@ -142,7 +166,7 @@ string Find_prev_elem(string &Data, int &pos, string &Chars, int elem)
     return element;
 }
 
-string Find_next_elem(string &Data, int pos, string &Chars, int elem)
+string Calculator::Find_next_elem(string &Data, int pos, string &Chars, int elem)
 {
     string element;
     string a = "\0";
@@ -173,7 +197,7 @@ string Find_next_elem(string &Data, int pos, string &Chars, int elem)
     return element;
 }
 
-int Find_curr_pos(const string Data, const string Chars, int elem)
+int Calculator::Find_curr_pos(const string Data, const string Chars, int elem)
 {
     int pos = 0, counter = 0;
 
@@ -193,7 +217,7 @@ int Find_curr_pos(const string Data, const string Chars, int elem)
     return -1;
 }
 
-void Bugs(string &Data)
+void Calculator::Bugs(string &Data)
 {
     int i = 0;
 
@@ -248,7 +272,7 @@ void Bugs(string &Data)
     }
 }
 
-float Operation(int elem, string &Data, string &Chars, bool Deg)
+float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
 {
     int pos = Find_curr_pos(Data, Chars, elem);
     float res = 0;
@@ -256,8 +280,8 @@ float Operation(int elem, string &Data, string &Chars, bool Deg)
 
     if (pos == -1)
     {
-       // cout << "error";
-        exit(0);
+        Error = "error, calc dead";
+        return 0;
     }
     //менять местами а и b запрещено !!!
     b = Find_next_elem(Data, pos, Chars, elem);
@@ -286,7 +310,14 @@ float Operation(int elem, string &Data, string &Chars, bool Deg)
         break;
     case 47:
         // "/"
-        res = atof(a.c_str()) / atof(b.c_str());
+        if (atof(b.c_str()) != 0)
+        {
+            res = atof(a.c_str()) / atof(b.c_str());
+        }
+        else
+        {
+            Error = "Сannot be divided by zero ";
+        }
         break;
     case 115://sin
         if (!Deg)
@@ -347,9 +378,10 @@ float Operation(int elem, string &Data, string &Chars, bool Deg)
     return res;
 }
 
-int Find_Chars(string Chars)
+int Calculator::Find_Chars(string Chars)
 {
     int pos = 0, i = 0, j = 0, temp;
+    int s = 0, c = 0, g = 0, t = 0, v = 0;
     int mass[6];
     mass[0] = (int)Chars.find('s');
     mass[1] = (int)Chars.find('c');
@@ -381,9 +413,9 @@ int Find_Chars(string Chars)
     return pos;
 }
 
-float Calculate(string & Data, string & Chars, int count, bool Deg)
+float Calculator::Calculate(string & Data, string & Chars, int count, bool Deg)
 {
-    int i = 0, j = 0;
+    int i = 0, j = 0, k = 0;
     float result = 0;
 
     if (Chars.find('s') != -1 || Chars.find('c') != -1 ||
@@ -427,8 +459,7 @@ float Calculate(string & Data, string & Chars, int count, bool Deg)
     return result;
 }
 
-
-int BKT(string &Data, string Chars, bool Deg)
+int Calculator::BKT(string &Data, string Chars, bool Deg)
 {
     int i = 0;
     int counter = 0, bkt_counter = 0, temp = 0, j = 1;
@@ -464,9 +495,8 @@ int BKT(string &Data, string Chars, bool Deg)
         log10.clear();
         if (error)
         {
-             Data = "Error Log: please, try 'log' with '(...)'";
-           // system("pause");
-            exit(0);
+            Error = "Error Log: please, try 'log' with '(...)' ";
+            return 0;
         }
         i = 0;
         bkt_Data.clear();
@@ -507,9 +537,8 @@ int BKT(string &Data, string Chars, bool Deg)
 
         if (atof(bkt_Data.c_str()) <= 0)
         {
-            Data = "Error Log : b < 0";
-          //  system("pause");
-            exit(0);
+            Error = "Error Log : b < 0 ";
+            return 0;
         }
         if (log10.empty())
         {
@@ -517,9 +546,8 @@ int BKT(string &Data, string Chars, bool Deg)
         }
         else if (atof(log10.c_str()) <= 0 || atof(log10.c_str()) == 1)
         {
-            Data = "Error Log : a < 0 || a = 1";
-           // system("pause");
-            exit(0);
+            Error = "Error Log : a < 0 || a = 1 ";
+            return 0;
         }
 
         res = log(atof(bkt_Data.c_str()))/ log(atof(log10.c_str()));
@@ -590,7 +618,7 @@ int BKT(string &Data, string Chars, bool Deg)
     return i;
 }
 
-bool bkt_check(string Data)
+bool Calculator::bkt_check(string Data)
 {
     int bkt_counter = 0, i = 0;
 
@@ -618,7 +646,7 @@ bool bkt_check(string Data)
 
 }
 
-void Start(string &Data, string &Chars, bool Deg)
+void Calculator::Start(string &Data, string &Chars, bool Deg)
 {
     int i = 0;
 
@@ -631,30 +659,6 @@ void Start(string &Data, string &Chars, bool Deg)
     }
 
 }
-	//"-(-144.12/-(12.112*-14) + 11.64235/2) * -60 * -(-3 )="
-string call(string Data, bool Deg)
-{
-    //string Data = "cos(sin(((-(-144.12/-(12.112*-14)+11.64235/2)*-60*-(-3)+log(log(exp))+(exp*pi)))/log12(pi)))=", Chars;
-    string Chars;
-        int i = 1;
-        float res = 0.0;
- //       bool Deg = false;
-       // cout << "Enter data:";
-       // getline(cin, Data);
-        Data = correct(Data);
-        if (!bkt_check(Data))
-        {
-           Data = "Error : missed '(' || ')'";
-          //  system("pause");
-           // return NULL;
-        }
-      //  system("cls");
-        while (i != 0)
-        {
-             i = BKT(Data, Chars, Deg);
-        }
+//"-(-144.12/-(12.112*-14) + 11.64235/2) * -60 * -(-3 )="
+//"cos(sin(((-(-144.12/-(12.112*-14)+11.64235/2)*-60*-(-3)+log(log(exp))+(exp*pi)))/log12(pi)))="
 
-       // cout << "Result: " << Data << endl;
-       // system("pause");
-        return Data;
-}
