@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <string>
+#include "QClipboard"
+#include "QScrollEvent"
+#include "QKeySequence"
 
 using namespace std;
 
@@ -21,6 +24,8 @@ public:
     ~MainWindow();
 
 private slots:
+
+    bool check_for_correct_input();
 
     void on_pushButton_AC_clicked();
 
@@ -84,10 +89,17 @@ private slots:
 
     void on_pushButton_buffer_clicked();
 
+    void keyPressEvent(QKeyEvent *event);
+
 private:
+
     Ui::MainWindow *ui;
+
     string DataOne;
+    string Temp;
+
     bool Deg;
+
 };
 
 #endif // MAINWINDOW_H

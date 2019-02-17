@@ -2,8 +2,6 @@
 #include <QApplication>
 #include "Calc.h"
 
-string Data;
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

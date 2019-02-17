@@ -5,13 +5,12 @@ Calculator::Calculator(string input, bool Deg)
 {
     string Chars;
     int i = 1;
-    float res = 0.0;
     string Data = input;
+    Err= false;
     Data = correct(Data);
 
     if (!bkt_check(Data))
     {
-        Error = "Error : missed '(' or ')'";
         return;
     }
     while (i != 0)
@@ -27,8 +26,11 @@ Calculator::Calculator(string input, bool Deg)
 
 string Calculator::correct(string Data)
 {
-    int i = 0;
+    int i = 0, j = 0;
     string temp;
+    string correct_input = { '+', '-', '/' ,'*', '(', ')', '^', '=', '.',
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'c', 'e', 'g', 'i',
+            'l', 'n', 'o', 'p', 'q', 'r', 's', 't' };
 
     while (Data.find(' ') != -1)
     {
@@ -36,11 +38,6 @@ string Calculator::correct(string Data)
         if (Data[i] == (char)' ')
         {
             Data.erase(i,1);
-           // for (i = 0; i < Data.length(); i++)
-           // {
-           //     Data[i] = Data[i + 1];
-           // }
-           // Data.resize(Data.length() - 1);
         }
     }
 
@@ -56,6 +53,134 @@ string Calculator::correct(string Data)
     {
         Data.resize(Data.length() - 1);
     }
+
+    for (i = 0; i < Data.length(); i++)
+        {
+            Err = true;
+            for (j = 0; j < correct_input.length(); j++)
+            {
+                if (Data[i] == correct_input[j])
+                {
+                    Err = false;
+                    j = correct_input.length() - 1;
+                }
+            }
+            if (Err)
+            {
+                Error = "Syntax error ";
+                return Data;
+            }
+
+        }
+
+        for (i = 0; i < Data.length(); i++)
+        {
+            switch ((int)Data[i])
+            {
+            case 115:	//s
+            {
+                if (Data[i + 1] == 'q' && Data[i + 2] == 'r' && Data[i + 3] == 't')
+                {
+                    i += 4;
+                }
+                else if (Data[i + 1] == 'i' && Data[i + 2] == 'n')
+                {
+                    i += 3;
+                }
+                else
+                {
+                    Err = true;
+                    Error = "Syntax error on " + to_string(i+1) + " pos ";
+                    return Data;
+                }
+                break;
+            }
+            case 99:	//c
+            {
+                if (Data[i + 1] == 'o' && Data[i + 2] == 's')
+                {
+                    i += 3;
+                }
+                else if (Data[i + 1] == 't' && Data[i + 2] == 'g')
+                {
+                    i += 3;
+                }
+                else
+                {
+                    Err = true;
+                    Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    return Data;
+                }
+                break;
+            }
+            case 108:	//l
+            {
+                if (Data[i + 1] == 'o' && Data[i + 2] == 'g')
+                {
+                    i += 3;
+                }
+                else
+                {
+                    Err = true;
+                    Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    return Data;
+                }
+                break;
+            }
+            case 112: //pi
+            {
+                if (Data[i + 1] == 'i')
+                {
+                    i += 2;
+                }
+                else
+                {
+                    Err = true;
+                    Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    return Data;
+                }
+                break;
+            }
+            case 101:	//e
+            {
+                i += 1;
+                break;
+            }
+            case 116:
+            {
+                if (Data[i + 1] == 'g')
+                {
+                    i += 2;
+                }
+                else
+                {
+                    Err = true;
+                    Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    return Data;
+                }
+                break;
+            }
+            default:
+            {
+                Err = true;
+                for (j = 0; j < 19; j++)
+                {
+                    if (Data[i] == correct_input[j])
+                    {
+                        Err = false;
+                        j = 19;
+                        i++;
+                    }
+                }
+                if (Err)
+                {
+                    Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    return Data;
+                }
+            }
+            }
+            i--;
+        }
 
     //вторая проверка для упрощения работы
     for (i = 0; i < Data.length(); i++)
@@ -96,9 +221,9 @@ string Calculator::correct(string Data)
             temp = to_string(pi);
             Data.insert(i, temp);
         }
-        else if ((Data[i] == (char)'e') && (Data[i + 1] == (char)'x') && (Data[i + 2] == (char)'p'))
+        else if(Data[i] == (char)'e')
         {
-            Data.erase(i, 3);
+            Data.erase(i, 1);
             temp = to_string(exp);
             Data.insert(i, temp);
         }
@@ -235,6 +360,18 @@ void Calculator::Bugs(string &Data)
                 Data.erase(i + 1, 1);
                 i = 0;
             }
+            else if (Data[i + 1] == '/')
+            {
+                Err = true;
+                Error = "Syntax error : \"+/\" ";
+                return;
+            }
+            else if (Data[i + 1] == '*')
+            {
+                Err = true;
+                Error = "Syntax error : \"+*\" ";
+                return;
+            }
         }
         else if (Data[i] == '-')
         {
@@ -249,6 +386,19 @@ void Calculator::Bugs(string &Data)
                 Data.erase(i + 1, 1);
                 i = 0;
             }
+            else if (Data[i + 1] == '/')
+            {
+                Err = true;
+                Error = "Syntax error : \"-/\" ";
+                return;
+            }
+            else if (Data[i + 1] == '*')
+            {
+                Err = true;
+                Error = "Syntax error : \"-*\" ";
+                return;
+            }
+
         }
         else if (Data[i] == '*')
         {
@@ -256,6 +406,18 @@ void Calculator::Bugs(string &Data)
             {
                 Data.erase(i + 1, 1);
                 i = 0;
+            }
+            else if (Data[i + 1] == '/')
+            {
+                Err = true;
+                Error = "Syntax error : \"*/\" ";
+                return;
+            }
+            else if (Data[i + 1] == '*')
+            {
+                Err = true;
+                Error = "Syntax error : \"**\" ";
+                return;
             }
 
         }
@@ -266,10 +428,24 @@ void Calculator::Bugs(string &Data)
                 Data.erase(i + 1, 1);
                 i = 0;
             }
+            else if (Data[i + 1] == '*')
+            {
+                Err = true;
+                Error = "Syntax error : \"/*\" ";
+                return;
+            }
+            else if (Data[i + 1] == '/')
+            {
+                Err = true;
+                Error = "Syntax error : \"//\" ";
+                return;
+            }
         }
 
         i++;
     }
+
+
 }
 
 float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
@@ -299,14 +475,7 @@ float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
         break;
     case 45:
         // "-"
-        /*if (a[0] != ' ')
-        {*/
             res = atof(a.c_str()) - atof(b.c_str());
-        /*}
-        else
-        {
-            res = -1 * atof(b.c_str());
-        }*/
         break;
     case 47:
         // "/"
@@ -381,7 +550,6 @@ float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
 int Calculator::Find_Chars(string Chars)
 {
     int pos = 0, i = 0, j = 0, temp;
-    int s = 0, c = 0, g = 0, t = 0, v = 0;
     int mass[6];
     mass[0] = (int)Chars.find('s');
     mass[1] = (int)Chars.find('c');
@@ -409,13 +577,12 @@ int Calculator::Find_Chars(string Chars)
         }
     }
 
-
     return pos;
 }
 
 float Calculator::Calculate(string & Data, string & Chars, int count, bool Deg)
 {
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
     float result = 0;
 
     if (Chars.find('s') != -1 || Chars.find('c') != -1 ||
@@ -469,6 +636,10 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
     bool error = true;
 
     Bugs(Data);
+    if (Err)
+    {
+        return 0;
+    }
     bkt_Data = Data;
     temp = Data.find('l');
 
@@ -641,6 +812,14 @@ bool Calculator::bkt_check(string Data)
     }
     else
     {
+        if ( bkt_counter < 0 )
+        {
+            Error = "Error : missed '(' ";
+        }
+        else
+        {
+            Error = "Error : missed ')' ";
+        }
         return false;
     }
 
@@ -659,6 +838,7 @@ void Calculator::Start(string &Data, string &Chars, bool Deg)
     }
 
 }
+
 //"-(-144.12/-(12.112*-14) + 11.64235/2) * -60 * -(-3 )="
-//"cos(sin(((-(-144.12/-(12.112*-14)+11.64235/2)*-60*-(-3)+log(log(exp))+(exp*pi)))/log12(pi)))="
+//"cos(sin(((-(-144.12/-(12.112*-14)+11.64235/2)*-60*-(-3)+log(log(e))+(e*pi)))/log12(pi)))="
 

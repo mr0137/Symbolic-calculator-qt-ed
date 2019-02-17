@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>515</width>
-    <height>455</height>
+    <height>445</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>500</width>
-    <height>350</height>
+    <width>515</width>
+    <height>437</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>6000</width>
-    <height>4000</height>
+    <width>515</width>
+    <height>800</height>
    </size>
   </property>
   <property name="baseSize">
@@ -34,8 +34,14 @@
     <height>356</height>
    </size>
   </property>
+  <property name="tabletTracking">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
    <string>Symbolic Calculator</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -55,6 +61,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -69,31 +78,6 @@
       <width>32</width>
       <height>32</height>
      </size>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>471</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::WinPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::TextSelectableByMouse</set>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_back">
@@ -112,6 +96,9 @@
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -143,6 +130,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -172,6 +162,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -203,6 +196,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -232,6 +228,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -263,6 +262,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -292,6 +294,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -323,6 +328,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -352,6 +360,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -383,6 +394,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -412,6 +426,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -443,6 +460,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -472,6 +492,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -503,6 +526,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -533,6 +559,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -562,6 +591,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -599,6 +631,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -634,6 +669,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -671,6 +709,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -706,6 +747,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -743,6 +787,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -779,6 +826,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -809,6 +859,12 @@
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <property name="text">
      <string>Deg</string>
     </property>
@@ -830,8 +886,14 @@
     <property name="tabletTracking">
      <bool>false</bool>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="toolTipDuration">
      <number>-1</number>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
@@ -859,6 +921,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -896,6 +961,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -932,8 +1000,11 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
@@ -946,6 +1017,9 @@
       <width>32</width>
       <height>32</height>
      </size>
+    </property>
+    <property name="default">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_buffer">
@@ -967,6 +1041,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -1004,6 +1081,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="acceptDrops">
      <bool>true</bool>
     </property>
@@ -1018,6 +1098,62 @@
       <width>32</width>
       <height>32</height>
      </size>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>474</width>
+      <height>52</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>474</width>
+      <height>51</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>474</width>
+      <height>400</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::TextSelectableByMouse</set>
     </property>
    </widget>
   </widget>
