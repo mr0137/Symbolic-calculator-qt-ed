@@ -6,12 +6,16 @@ Calculator::Calculator(string input, bool Deg)
     string Chars;
     int i = 1;
     string Data = input;
-    Err= false;
+    Err = false;
     Data = correct(Data);
 
     if (!bkt_check(Data))
     {
         return;
+    }
+    if(Err)
+    {
+        i = 0;
     }
     while (i != 0)
     {
@@ -27,10 +31,15 @@ Calculator::Calculator(string input, bool Deg)
 string Calculator::correct(string Data)
 {
     int i = 0, j = 0;
+
     string temp;
-    string correct_input = { '+', '-', '/' ,'*', '(', ')', '^', '=', '.',
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'c', 'e', 'g', 'i',
-            'l', 'n', 'o', 'p', 'q', 'r', 's', 't' };
+    string correct_input = {'+', '-', '/' ,
+    '*', '(', ')', '^', '=', '.', '0', '1',
+    '2', '3', '4', '5', '6', '7', '8', '9',
+    'c', 'e', 'g', 'i', 'l', 'n', 'o', 'p',
+    'q', 'r', 's', 't' };
+
+    //удаление пробелов
 
     while (Data.find(' ') != -1)
     {
@@ -41,6 +50,8 @@ string Calculator::correct(string Data)
         }
     }
 
+    //преобразование букв из "А" в "а"
+
     for (i = 0; i < Data.length(); i++)
     {
         if ((int)Data[i] >= 65 && (int)Data[i] <= 90)
@@ -49,11 +60,14 @@ string Calculator::correct(string Data)
         }
     }
 
-    if (Data[Data.length() - 1] == '=')
+    //удаление всех "="
+
+    while(Data.find('=') != -1)
     {
-        Data.resize(Data.length() - 1);
+        Data.erase(Data.find('='),1);
     }
 
+    //проверка на принадлежность введённых символов "азбуке"
     for (i = 0; i < Data.length(); i++)
         {
             Err = true;
@@ -72,11 +86,27 @@ string Calculator::correct(string Data)
             }
 
         }
+    //проверка на корректность введённых символов
 
         for (i = 0; i < Data.length(); i++)
         {
             switch ((int)Data[i])
             {
+            case 41:
+            {
+                if (Data[i + 1] == '(')
+                {
+                    Error = "Syntax error: \")(\" ";
+                    return Data;
+                }
+                else
+                {
+                     i++;
+                }
+
+                break;
+            }
+
             case 115:	//s
             {
                 if (Data[i + 1] == 'q' && Data[i + 2] == 'r' && Data[i + 3] == 't')
@@ -89,7 +119,6 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    Err = true;
                     Error = "Syntax error on " + to_string(i+1) + " pos ";
                     return Data;
                 }
@@ -107,7 +136,7 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    Err = true;
+                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
                     return Data;
                 }
@@ -121,7 +150,7 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    Err = true;
+                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
                     return Data;
                 }
@@ -135,7 +164,7 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    Err = true;
+                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
                     return Data;
                 }
@@ -154,7 +183,7 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    Err = true;
+                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
                     return Data;
                 }
@@ -182,7 +211,8 @@ string Calculator::correct(string Data)
             i--;
         }
 
-    //вторая проверка для упрощения работы
+    //преобразование для упрощения работы
+
     for (i = 0; i < Data.length(); i++)
     {
         if ((Data[i] == (char)'s') && (Data[i + 1] == (char)'i') && (Data[i + 2] == (char)'n'))
@@ -485,7 +515,7 @@ float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
         }
         else
         {
-            Error = "Сannot be divided by zero ";
+            Error = "Сan't be divided by zero ";
         }
         break;
     case 115://sin
@@ -633,7 +663,6 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
     string bkt_Data;
     string log10;
     float res;
-    bool error = true;
 
     Bugs(Data);
     if (Err)
@@ -656,7 +685,7 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
             log10 = bkt_Data[bkt_Data.find('l') + i];
             if (log10[0] == '(')
             {
-                error = false;
+                Err = false;
                 break;
             }
             i++;
@@ -664,7 +693,7 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
 
         }
         log10.clear();
-        if (error)
+        if (Err)
         {
             Error = "Error Log: please, try 'log' with '(...)' ";
             return 0;
@@ -837,6 +866,11 @@ void Calculator::Start(string &Data, string &Chars, bool Deg)
         }
     }
 
+}
+
+bool Calculator::isError()
+{
+    return Err;
 }
 
 //"-(-144.12/-(12.112*-14) + 11.64235/2) * -60 * -(-3 )="

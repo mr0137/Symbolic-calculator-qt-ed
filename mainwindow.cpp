@@ -1,18 +1,13 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Calc.h"
-
-
-//#include "regex"
-
-//regex corr("([0-9]|(|*|/|+|-| )");
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //prev_check = 0;
     ui->radioButton_rad->click();
+    ui->tableWidget->setColumnWidth(0, 200);
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +26,7 @@ bool MainWindow::check_for_correct_input()
         {
             return true;
         }
-        else if (DataOne[DataOne.length() - 1] == NULL)//���� ���� � ������ ������
+        else if (DataOne[DataOne.length() - 1] == NULL)//если ввод с начала строки
         {
             return true;
         }
@@ -44,11 +39,17 @@ void MainWindow::Show()
 {
     ui->label->setText((const QString)DataOne.c_str());
 
-    ui->label->moveCursor(QTextCursor::End); /* ��� ��������� ����  */
+    ui->label->moveCursor(QTextCursor::End); /* для прокрутки вниз  */
 }
 
 void MainWindow::on_pushButton_AC_clicked()
 {
+    if (!DataOne.empty())
+    {
+       Temp = DataOne;
+    }
+
+
     DataOne.clear();
 
     Show();
@@ -58,6 +59,7 @@ void MainWindow::on_pushButton_back_clicked()
 {
     if (!DataOne.empty())
     {
+        Temp = DataOne;
         DataOne.erase(DataOne.length()-1, 1);
     }
     Show();
@@ -221,10 +223,20 @@ void MainWindow::on_pushButton_dot_clicked()
 void MainWindow::on_pushButton_equal_clicked()
 {
     Temp = DataOne;
-
     Calculator Calc(DataOne,Deg);
     DataOne = Calc.Get_Result();
-    DataOne.erase(DataOne.length() - 1, 1);
+
+    if (!Calc.isError())
+    {
+        DataOne.erase(DataOne.length() - 1, 1);
+        history_add();
+    }
+    else
+    {
+        QMessageBox::information(this, "Error", DataOne.c_str());
+        DataOne = Temp;
+        Temp.clear();
+    }
     Show();
 }
 
@@ -234,7 +246,7 @@ void MainWindow::on_pushButton_buffer_clicked()
 
     QString text = clipboard->text(QClipboard::Clipboard);
 
-    DataOne = text.toUtf8().constData();
+    DataOne += text.toUtf8().constData();
     Show();
 }
 
@@ -242,12 +254,23 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     switch(event->key())
     {
+        case Qt::Key_Z:
+        {
+            if(event->modifiers() & Qt::CTRL)
+            {
+                swap(Temp,DataOne);
+            }
+            break;
+        }
         case Qt::Key_C:
         {
             if(event->modifiers() & Qt::CTRL)
             {
-                QClipboard *clipboard = QApplication::clipboard();
-                clipboard->setText(DataOne.c_str());
+                if (!DataOne.empty())
+                {
+                    QClipboard *clipboard = QApplication::clipboard();
+                    clipboard->setText(DataOne.c_str());
+                }
             }
             else
             {
@@ -529,4 +552,62 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
      }
     Show();
 
+}
+
+void MainWindow::on_pushButton_pi_clicked()
+{
+    char a = DataOne[DataOne.length() - 1];
+    if (a == '*' || a == '/' || a == '-' || a == '+' || a == NULL || a == '(' || a == 'g')
+    {
+        DataOne += "pi";
+        Show();
+    }
+}
+
+void MainWindow::on_pushButton_e_clicked()
+{
+    char a = DataOne[DataOne.length() - 1];
+    if (a == '*' || a == '/' || a == '-' || a == '+' || a == NULL || a == '(' || a == 'g')
+    {
+        DataOne += "e";
+        Show();
+    }
+}
+
+void MainWindow::history_add()
+{
+    int j = ui->tableWidget->rowCount();
+    j++;
+
+    ui->tableWidget->setRowCount(j);//установка нужного количества строк
+    j -= 2;
+    for (j; j >= 0;  j--)//перемещаем новый элемент на первую позицию
+    {
+        ui->tableWidget->setItem(j+1, 0, ui->tableWidget->takeItem(j,0));
+        ui->tableWidget->setItem(j+1, 1, ui->tableWidget->takeItem(j,1));
+
+    }
+
+    QTableWidgetItem *table1 = new QTableWidgetItem((QString)Temp.c_str());
+    QTableWidgetItem *table2 = new QTableWidgetItem((QString)DataOne.c_str());
+
+    ui->tableWidget->setItem(0, 0, table1);
+    ui->tableWidget->setItem(0, 1, table2);
+
+}
+
+void MainWindow::on_pushButton_h_clear_clicked()
+{
+    ui->tableWidget->clear();
+    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setRowCount(0);
+    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Exercise" << "Result" );
+}
+
+void MainWindow::on_tableWidget_cellDoubleClicked(int row, int column)
+{
+    QTableWidgetItem *table = ui->tableWidget->item(row, column);
+    string A = table->text().toUtf8().constData();
+    DataOne += A;
+    Show();
 }

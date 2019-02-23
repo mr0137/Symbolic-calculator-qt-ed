@@ -6,6 +6,8 @@
 #include "QClipboard"
 #include "QScrollEvent"
 #include "QKeySequence"
+#include "QMessageBox"
+
 
 using namespace std;
 
@@ -90,6 +92,16 @@ private slots:
     void on_pushButton_buffer_clicked();
 
     void keyPressEvent(QKeyEvent *event);
+
+    void on_pushButton_pi_clicked();
+
+    void on_pushButton_e_clicked();
+
+    void history_add();
+
+    void on_pushButton_h_clear_clicked();
+
+    void on_tableWidget_cellDoubleClicked(int row, int column);
 
 private:
 
