@@ -1,5 +1,9 @@
 # Symbolic-calculator-qt-ed
+## ver. 1.25
 
+  Исправлены баги. Сообщения об ошибка выводятся в отдельном окне.
+  ***
+  
 ## ver. 1.2
   ![alt text](https://pp.userapi.com/c848416/v848416426/1339d5/4x4kqdXK0x4.jpg)
   
