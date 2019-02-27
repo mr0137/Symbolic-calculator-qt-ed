@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 
 bool MainWindow::check_for_correct_input()
 {
-    string mass = {' ','+','-','/','*','('};
+    string mass = {' ', '+', '-', '/', '*', '('};
     int i;
 
     for (i = 0; i < mass.length(); i++)
@@ -39,7 +39,7 @@ void MainWindow::Show()
 {
     ui->label->setText((const QString)DataOne.c_str());
 
-    ui->label->moveCursor(QTextCursor::End); /* для прокрутки вниз  */
+    ui->label->moveCursor(QTextCursor::End); // для прокрутки вниз
 }
 
 void MainWindow::on_pushButton_AC_clicked()
@@ -51,6 +51,7 @@ void MainWindow::on_pushButton_AC_clicked()
 
 
     DataOne.clear();
+    DataOne += " ";
 
     Show();
 }
@@ -222,6 +223,14 @@ void MainWindow::on_pushButton_dot_clicked()
 
 void MainWindow::on_pushButton_equal_clicked()
 {
+    if( DataOne.empty() || (DataOne.length() == 1 && DataOne[0] == ' '))
+    {
+        return;
+    }
+    else if (DataOne == Temp)
+    {
+        return;
+    }
     Temp = DataOne;
     Calculator Calc(DataOne,Deg);
     DataOne = Calc.Get_Result();
@@ -236,6 +245,7 @@ void MainWindow::on_pushButton_equal_clicked()
         QMessageBox::information(this, "Error", DataOne.c_str());
         DataOne = Temp;
         Temp.clear();
+        MainWindow::setFocus();
     }
     Show();
 }
@@ -557,6 +567,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::on_pushButton_pi_clicked()
 {
     char a = DataOne[DataOne.length() - 1];
+
     if (a == '*' || a == '/' || a == '-' || a == '+' || a == NULL || a == '(' || a == 'g')
     {
         DataOne += "pi";
@@ -567,6 +578,7 @@ void MainWindow::on_pushButton_pi_clicked()
 void MainWindow::on_pushButton_e_clicked()
 {
     char a = DataOne[DataOne.length() - 1];
+
     if (a == '*' || a == '/' || a == '-' || a == '+' || a == NULL || a == '(' || a == 'g')
     {
         DataOne += "e";
@@ -579,9 +591,12 @@ void MainWindow::history_add()
     int j = ui->tableWidget->rowCount();
     j++;
 
-    ui->tableWidget->setRowCount(j);//установка нужного количества строк
+    //установка нужного количества строк
+    ui->tableWidget->setRowCount(j);
+
+    //перемещаем новый элемент на первую позицию
     j -= 2;
-    for (j; j >= 0;  j--)//перемещаем новый элемент на первую позицию
+    for (j; j >= 0;  j--)
     {
         ui->tableWidget->setItem(j+1, 0, ui->tableWidget->takeItem(j,0));
         ui->tableWidget->setItem(j+1, 1, ui->tableWidget->takeItem(j,1));
@@ -593,7 +608,7 @@ void MainWindow::history_add()
 
     ui->tableWidget->setItem(0, 0, table1);
     ui->tableWidget->setItem(0, 1, table2);
-
+    /*******************************************/
 }
 
 void MainWindow::on_pushButton_h_clear_clicked()

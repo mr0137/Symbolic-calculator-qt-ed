@@ -19,6 +19,10 @@ Calculator::Calculator(string input, bool Deg)
     }
     while (i != 0)
     {
+        if (Err)
+        {
+            break;
+        }
         i = BKT(Data, Chars, Deg);
     }
     if (atof(Data.c_str()) -  atoi(Data.c_str()) == 0)
@@ -97,6 +101,7 @@ string Calculator::correct(string Data)
                 if (Data[i + 1] == '(')
                 {
                     Error = "Syntax error: \")(\" ";
+                    Err = true;
                     return Data;
                 }
                 else
@@ -120,6 +125,7 @@ string Calculator::correct(string Data)
                 else
                 {
                     Error = "Syntax error on " + to_string(i+1) + " pos ";
+                    Err = true;
                     return Data;
                 }
                 break;
@@ -136,8 +142,8 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    Err = true;
                     return Data;
                 }
                 break;
@@ -150,8 +156,8 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    Err = true;
                     return Data;
                 }
                 break;
@@ -164,8 +170,8 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    Err = true;
                     return Data;
                 }
                 break;
@@ -183,8 +189,8 @@ string Calculator::correct(string Data)
                 }
                 else
                 {
-                    //Err = true;
                     Error = "Syntax error on " + to_string(i + 1) + " pos ";
+                    Err = true;
                     return Data;
                 }
                 break;
@@ -277,6 +283,7 @@ int Calculator::Capacity(const string Data)
         }
         i++;
     }
+    if (counter == 1) counter++;
     return counter - 1;
 }
 
@@ -487,18 +494,43 @@ float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
     if (pos == -1)
     {
         Error = "error, calc dead";
+        Err = true;
         return 0;
     }
+
+
     //менять местами а и b запрещено !!!
+
     b = Find_next_elem(Data, pos, Chars, elem);
     a = Find_prev_elem(Data, pos, Chars, elem);
+
+    /*if ( (a.length() == 1 && a[0] == ' ' ) || (b.length() == 1 && b[0] == ' ') )
+    {
+        if (Chars.length() == 1 && (Chars[0] == '/' || Chars[0] == '*' || Chars[0] == '^') )
+        {
+            Err = true;
+            Error = " Syntax error: " + a + Chars[0] + b;
+            return res;
+        }
+    }*/
 
     switch ((int)Chars[elem])
     {
     case 42:
         // "*"
-        res = atof(a.c_str()) * atof(b.c_str());
-        break;
+        {
+            if ((a.length() == 1 && (a[0] == '\0' || a[0] == ' ')) ||
+                    (b.length() == 1 && (b[0] == '\0' || b[0] == ' ')))
+            {
+                Err = true;
+                Error = " Syntax error: " + a + Chars[0] + b;
+            }
+            else
+            {
+                res = atof(a.c_str()) * atof(b.c_str());
+            }
+            break;
+        }
     case 43:
         // "+"
         res = atof(a.c_str()) + atof(b.c_str());
@@ -509,15 +541,27 @@ float Calculator::Operation(int elem, string &Data, string &Chars, bool Deg)
         break;
     case 47:
         // "/"
-        if (atof(b.c_str()) != 0)
         {
-            res = atof(a.c_str()) / atof(b.c_str());
+            if ((a.length() == 1 && (a[0] == '\0' || a[0] == ' ')) ||
+                    (b.length() == 1 && (b[0] == '\0' || b[0] == ' ')))
+            {
+                Err = true;
+                Error = "Syntax error:" + a + Chars[0] + b;
+            }
+            else
+            {
+                if (atof(b.c_str()) != 0)
+                {
+                res = atof(a.c_str()) / atof(b.c_str());
+                }
+                else
+                {
+                    Error = "Сan't be divided by zero ";
+                    Err = true;
+                }
+            }
+            break;
         }
-        else
-        {
-            Error = "Сan't be divided by zero ";
-        }
-        break;
     case 115://sin
         if (!Deg)
         {
@@ -738,6 +782,7 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
         if (atof(bkt_Data.c_str()) <= 0)
         {
             Error = "Error Log : b < 0 ";
+            Err = true;
             return 0;
         }
         if (log10.empty())
@@ -747,6 +792,7 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
         else if (atof(log10.c_str()) <= 0 || atof(log10.c_str()) == 1)
         {
             Error = "Error Log : a < 0 || a = 1 ";
+            Err = true;
             return 0;
         }
 
@@ -801,9 +847,13 @@ int Calculator::BKT(string &Data, string Chars, bool Deg)
     else
     {
         Start(bkt_Data, Chars, Deg);
+        if (Err)
+        {
+            return 1;
+        }
     }
 
-    if (i != 0)
+    if (i != 0 && !Err)
     {
         bkt_Data.erase(0, 1);
         bkt_Data.erase(bkt_Data.length() - 1, 1);
@@ -844,10 +894,12 @@ bool Calculator::bkt_check(string Data)
         if ( bkt_counter < 0 )
         {
             Error = "Error : missed '(' ";
+            Err = true;
         }
         else
         {
             Error = "Error : missed ')' ";
+            Err = true;
         }
         return false;
     }
@@ -860,8 +912,12 @@ void Calculator::Start(string &Data, string &Chars, bool Deg)
 
     if (Sort(Data, Chars) != 0)
     {
-        while (1 != Capacity(Data))
+        while (1 != Capacity(Data) )
         {
+            if (Err)
+            {
+                return;
+            }
             Calculate(Data, Chars, i, Deg);
         }
     }

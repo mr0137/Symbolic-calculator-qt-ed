@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <cstring>
 
 #pragma warning (disable : 4244 4018 4100)
 
